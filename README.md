@@ -2,6 +2,11 @@
 
 This package adds versioning by Accept-header into FastAPI
 
+### Installation
+```shell
+pip install fastapi-header-versions
+```
+
 ### Defining app and routes
 
 ```python
@@ -32,6 +37,7 @@ async def test_get_v2() -> dict:
 
 
 app = fastapi.FastAPI()
+app.include_router(decorate_router)
 app.include_router(inline_router)
 init_fastapi_versioning(app=app)
 ```
