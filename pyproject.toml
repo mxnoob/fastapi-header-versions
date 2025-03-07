@@ -1,10 +1,10 @@
 [project]
 name = "fastapi-header-versions"
-version = "0.1.1"
+version = "0.1.2"
 description = "Add your description here"
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi>=0.115.11",
+    "fastapi>=0.100",
 ]
 
 [project.urls]
