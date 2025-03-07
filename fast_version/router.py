@@ -69,6 +69,9 @@ class DecoratorVersionedRouter(APIRouter):
                 if kwargs["methods"][0] not in set(route.methods):
                     continue
 
+                if path not in route.path:
+                    continue
+
                 for app_name in app_names:
                     if app_name not in route.app_names:
                         continue
