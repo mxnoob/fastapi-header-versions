@@ -9,14 +9,14 @@ from starlette import types
 from starlette.responses import JSONResponse
 
 from fast_version import helpers
-from fast_version.router import DecoratorVersionedRouter, VersionedAPIRoute
+from fast_version.router import VersionedRouter, VersionedAPIRoute
 
 _APP_RE: typing.Final = r"application/vnd\.(?P<app_name>.+)\+json; version=(?P<version>.+)$"
 _VERSION_RE: typing.Final = re.compile(r"^\d+\.\d+$")
 
 
 def _get_vendor_media_type() -> str:
-    return DecoratorVersionedRouter.VENDOR_MEDIA_TYPE
+    return VersionedRouter.VENDOR_MEDIA_TYPE
 
 
 def init_fastapi_versioning(*, app: fastapi.FastAPI) -> None:

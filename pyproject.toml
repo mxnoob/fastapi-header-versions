@@ -1,8 +1,9 @@
 [project]
 name = "fastapi-header-versions"
-version = "0.1.2"
+version = "0.2.0"
 description = "Add your description here"
 requires-python = ">=3.12"
+readme = "README.md"
 dependencies = [
     "fastapi>=0.100",
 ]

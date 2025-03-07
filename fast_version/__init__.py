@@ -1,8 +1,8 @@
 from fast_version.app import init_fastapi_versioning
-from fast_version.router import DecoratorVersionedRouter, InlineVersionedRouter
+from fast_version.router import VersionedRouter, InlineVersionedRouter
 
 __all__ = [
-    "DecoratorVersionedRouter",
+    "VersionedRouter",
     "InlineVersionedRouter",
     "init_fastapi_versioning",
 ]

@@ -38,7 +38,7 @@ class VersionedAPIRoute(APIRoute):
         return Match.NONE, {}
 
 
-class DecoratorVersionedRouter(APIRouter):
+class VersionedRouter(APIRouter):
     VENDOR_MEDIA_TYPE = "application/vnd.{app_name}+json; version={version}"
 
     def api_route(
@@ -54,7 +54,7 @@ class DecoratorVersionedRouter(APIRouter):
                 @ClassProperty
                 def media_type(self) -> str:  # type: ignore[override]
                     """Media type for docs."""
-                    return DecoratorVersionedRouter.VENDOR_MEDIA_TYPE.format(app_name=app_names[0], version=version_str)
+                    return VersionedRouter.VENDOR_MEDIA_TYPE.format(app_name=app_names[0], version=version_str)
 
             kwargs["response_class"] = VersionedJSONResponse
             kwargs["route_class_override"] = VersionedAPIRoute
@@ -100,7 +100,7 @@ class DecoratorVersionedRouter(APIRouter):
         return decorator
 
 
-class InlineVersionedRouter(DecoratorVersionedRouter):
+class InlineVersionedRouter(VersionedRouter):
 
     def _version_wrapper(
         self,

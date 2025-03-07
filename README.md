@@ -8,19 +8,20 @@ This package adds versioning by Accept-header into FastAPI
 from enum import StrEnum
 import fastapi
 
-from fast_version import DecoratorVersionedRouter, InlineVersionedRouter, init_fastapi_versioning
+from fast_version import VersionedRouter, InlineVersionedRouter, init_fastapi_versioning
 
 
 class AppType(StrEnum):
     some_name: "some.name"
+    some_name2: "some.name2"
 
 
-decorate_router = DecoratorVersionedRouter()
+decorate_router = VersionedRouter()
 inline_router = InlineVersionedRouter()
 
 
 @decorate_router.get("/test/")
-@decorate_router.set_api_version((1, 0), app_names={AppType.some_name})
+@decorate_router.set_api_version((1, 0), app_names={AppType.some_name, AppType.some_name2})
 async def test_get() -> dict:
     return {"version": (1, 0)}
 
