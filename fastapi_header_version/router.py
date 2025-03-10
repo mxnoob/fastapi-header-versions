@@ -8,7 +8,7 @@ from starlette import types
 from starlette.responses import JSONResponse
 from starlette.routing import Match
 
-from fast_version.helpers import ClassProperty
+from fastapi_header_version.helpers import ClassProperty
 
 DEFAULT_VERSION: typing.Final = (1, 0)
 
@@ -60,7 +60,10 @@ class VersionedRouter(APIRouter):
             kwargs["route_class_override"] = VersionedAPIRoute
             if len(app_names) > 1:
                 description = f"Версия `{version_str}` поддерживается: `{'`, `'.join(app_names)}`"
-                kwargs["description"] = description + "\n\n - " + (kwargs["description"] or "")
+                original_description = kwargs["description"] or ""
+                kwargs["description"] = (
+                    description + "\n\n" + (f" - {original_description}" if original_description else "")
+                )
 
             for route in self.routes:
                 if version_str != route.version_str:

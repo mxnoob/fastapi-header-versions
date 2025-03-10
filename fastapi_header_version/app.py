@@ -8,8 +8,8 @@ from fastapi.openapi.utils import get_openapi
 from starlette import types
 from starlette.responses import JSONResponse
 
-from fast_version import helpers
-from fast_version.router import VersionedRouter, VersionedAPIRoute
+from fastapi_header_version import helpers
+from fastapi_header_version.router import VersionedRouter, VersionedAPIRoute
 
 _APP_RE: typing.Final = r"application/vnd\.(?P<app_name>.+)\+json; version=(?P<version>.+)$"
 _VERSION_RE: typing.Final = re.compile(r"^\d+\.\d+$")

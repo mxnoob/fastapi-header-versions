@@ -13,7 +13,7 @@ pip install fastapi-header-versions
 from enum import StrEnum
 import fastapi
 
-from fast_version import VersionedRouter, InlineVersionedRouter, init_fastapi_versioning
+from fastapi_header_version import VersionedRouter, InlineVersionedRouter, init_fastapi_versioning
 
 
 class AppType(StrEnum):
@@ -21,12 +21,12 @@ class AppType(StrEnum):
     some_name2: "some.name2"
 
 
-decorate_router = VersionedRouter()
+router = VersionedRouter()
 inline_router = InlineVersionedRouter()
 
 
-@decorate_router.get("/test/")
-@decorate_router.set_api_version((1, 0), app_names={AppType.some_name, AppType.some_name2})
+@router.get("/test/")
+@router.set_api_version((1, 0), app_names={AppType.some_name, AppType.some_name2})
 async def test_get() -> dict:
     return {"version": (1, 0)}
 
@@ -37,7 +37,7 @@ async def test_get_v2() -> dict:
 
 
 app = fastapi.FastAPI()
-app.include_router(decorate_router)
+app.include_router(router)
 app.include_router(inline_router)
 init_fastapi_versioning(app=app)
 ```
