@@ -14,7 +14,10 @@ repository = "https://github.com/mxnoob/fastapi-header-versions"
 [dependency-groups]
 dev = [
     "black>=25.1.0",
+    "httpx>=0.28.1",
     "isort>=6.0.1",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.25.3",
 ]
 
 [build-system]
@@ -33,3 +36,6 @@ line_length = 120
 combine_as_imports = true
 include_trailing_comma = true
 remove_redundant_aliases = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

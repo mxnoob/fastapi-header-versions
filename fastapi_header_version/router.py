@@ -10,13 +10,15 @@ from starlette.routing import Match
 
 from fastapi_header_version.helpers import ClassProperty
 
+from .types import VERSION, APP_NAME
+
 DEFAULT_VERSION: typing.Final = (1, 0)
 
 
 class VersionedAPIRoute(APIRoute):
     @property
-    def version(self) -> tuple[int, int]:
-        return typing.cast(tuple[int, int], getattr(self.endpoint, "version"))
+    def version(self) -> VERSION:
+        return typing.cast(VERSION, getattr(self.endpoint, "version"))
 
     @property
     def app_names(self) -> set[str]:
@@ -31,7 +33,7 @@ class VersionedAPIRoute(APIRoute):
         if match != Match.FULL:
             return match, child_scope
 
-        request_version: tuple[int, int] = scope.get("version", DEFAULT_VERSION)
+        request_version: VERSION = scope.get("version", DEFAULT_VERSION)
         app_name: str = scope.get("app_name")
         if request_version == self.version and app_name in self.app_names:
             return Match.FULL, child_scope
@@ -88,12 +90,15 @@ class VersionedRouter(APIRouter):
 
     @staticmethod
     def set_api_version(
-        version: tuple[int, int],
+        version: tuple[int, int] | int,
         *,
         app_names: set[StrEnum] | StrEnum,
     ) -> typing.Callable[[DecoratedCallable], DecoratedCallable]:
         if not isinstance(app_names, set):
             app_names = {app_names}
+
+        if isinstance(version, int):
+            version = (version,)
 
         def decorator(func: DecoratedCallable) -> DecoratedCallable:
             setattr(func, "version", version)
@@ -108,8 +113,8 @@ class InlineVersionedRouter(VersionedRouter):
     def _version_wrapper(
         self,
         original_decorator: DecoratedCallable,
-        version: tuple[int, int],
-        app_names: set[StrEnum] | StrEnum,
+        version: tuple[int, int] | int,
+        app_names: APP_NAME,
     ):
         def custom_decorator(func: Callable) -> Callable:
             decorated_func = self.set_api_version(version=version, app_names=app_names)(func)
@@ -121,7 +126,7 @@ class InlineVersionedRouter(VersionedRouter):
     def get(
         self,
         path: str,
-        version: tuple[int, int],
+        version: tuple[int, int] | int,
         app_names: set[StrEnum] | StrEnum,
         **kwargs: typing.Any,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
@@ -134,7 +139,7 @@ class InlineVersionedRouter(VersionedRouter):
     def post(
         self,
         path: str,
-        version: tuple[int, int],
+        version: tuple[int, int] | int,
         app_names: set[StrEnum] | StrEnum,
         **kwargs: typing.Any,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
@@ -147,7 +152,7 @@ class InlineVersionedRouter(VersionedRouter):
     def patch(
         self,
         path: str,
-        version: tuple[int, int],
+        version: tuple[int, int] | int,
         app_names: set[StrEnum] | StrEnum,
         **kwargs: typing.Any,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
@@ -160,7 +165,7 @@ class InlineVersionedRouter(VersionedRouter):
     def put(
         self,
         path: str,
-        version: tuple[int, int],
+        version: tuple[int, int] | int,
         app_names: set[StrEnum] | StrEnum,
         **kwargs: typing.Any,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
@@ -173,7 +178,7 @@ class InlineVersionedRouter(VersionedRouter):
     def delete(
         self,
         path: str,
-        version: tuple[int, int],
+        version: tuple[int, int] | int,
         app_names: set[StrEnum] | StrEnum,
         **kwargs: typing.Any,
     ) -> Callable[[DecoratedCallable], DecoratedCallable]:
