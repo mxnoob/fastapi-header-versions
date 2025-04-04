@@ -12,7 +12,7 @@ from fastapi_header_version import helpers
 from fastapi_header_version.router import VersionedRouter, VersionedAPIRoute
 
 _APP_RE: typing.Final = r"application/vnd\.(?P<app_name>.+)\+json; version=(?P<version>.+)$"
-_VERSION_RE: typing.Final = re.compile(r"^\d+\.\d+$")
+_VERSION_RE: typing.Final = re.compile(r"^\d+(\.\d+)?$")
 
 
 def _get_vendor_media_type() -> str:
@@ -61,7 +61,7 @@ class FastAPIVersioningMiddleware:
 
             if not _VERSION_RE.match(version):
                 error_response = JSONResponse(
-                    {"detail": "Version should be in <major>.<minor> format"},
+                    {"detail": "Version should be <major> or in <major>.<minor> format"},
                     status_code=400,
                 )
                 break

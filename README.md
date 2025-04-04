@@ -31,7 +31,12 @@ async def test_get() -> dict:
     return {"version": (1, 0)}
 
 
-@inline_router.get("/test/", (2, 0), app_names=AppType.some_name)
+@inline_router.get("/test/", version=1, app_names=AppType.some_name)
+async def test_get_v1() -> dict:
+    return {"version": (2, 0)}
+
+
+@inline_router.get("/test/", version=(2, 0), app_names=AppType.some_name)
 async def test_get_v2() -> dict:
     return {"version": (2, 0)}
 
